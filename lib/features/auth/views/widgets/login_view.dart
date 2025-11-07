@@ -1,0 +1,68 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:gap/gap.dart';
+import 'package:hungry_app/features/auth/views/widgets/custom_email_field.dart';
+import 'package:hungry_app/features/auth/views/widgets/custom_pass_field.dart';
+
+import '../../../../core/constants/app_colors.dart';
+import 'custom_btn.dart';
+
+class LoginView extends StatefulWidget {
+  const LoginView({super.key});
+
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  late GlobalKey<FormState> formKey ;
+  late TextEditingController emailController;
+  late TextEditingController passController;
+  @override
+  void initState() {
+    formKey=GlobalKey<FormState>();
+    emailController = TextEditingController();
+    passController = TextEditingController();
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.primaryColor,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Gap(120),
+                SvgPicture.asset("assets/logo/hungry.svg"),
+                Gap(50),
+                CustomEmailField(hint: "Email", controller: emailController),
+                Gap(10),
+                CustomPassField(hint: "Password", controller: passController),
+                Gap(50),
+                CustomBtn(
+                  title: "Login",
+                  onTap: () {
+                    if (formKey.currentState!.validate()) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (c) => LoginView()),
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
