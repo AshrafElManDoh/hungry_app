@@ -54,23 +54,17 @@ class _RootState extends State<Root> {
         },
         children: views,
       ),
-
-      bottomNavigationBar: Container(
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 20),
-        decoration: BoxDecoration(
-          color: AppColors.primaryColor,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
+      bottomNavigationBar: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
         ),
-        child: BottomNavigationBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
+        child: CupertinoTabBar(
+          backgroundColor: AppColors.primaryColor,
           currentIndex: currentPage,
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.grey.shade600,
+          height: 72,
+          activeColor: Colors.white,
+          inactiveColor: Colors.grey.shade600,
           onTap: (value) => setState(() {
             controller.jumpToPage(value);
           }),

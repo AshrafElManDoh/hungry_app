@@ -1,12 +1,133 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:hungry_app/features/home/data/item_model.dart';
+import 'package:hungry_app/features/home/views/widgets/categories.dart';
+import 'package:hungry_app/features/home/views/widgets/header.dart';
+import 'package:hungry_app/features/home/views/widgets/item_widget.dart';
+import 'package:hungry_app/features/home/views/widgets/search_text_field.dart';
+import 'package:hungry_app/features/product/views/product_view.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
 
   @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  final List<ItemModel> items = [
+    ItemModel(
+      image: "assets/splash/splash.png",
+      title: "Cheeseburger",
+      subtitle: "Wendy's Burger",
+      rate: 4.6,
+    ),
+    ItemModel(
+      image: "assets/splash/splash.png",
+      title: "Cheeseburger",
+      subtitle: "Wendy's Burger",
+      rate: 4.6,
+    ),
+    ItemModel(
+      image: "assets/splash/splash.png",
+      title: "Cheeseburger",
+      subtitle: "Wendy's Burger",
+      rate: 4.6,
+    ),
+    ItemModel(
+      image: "assets/splash/splash.png",
+      title: "Cheeseburger",
+      subtitle: "Wendy's Burger",
+      rate: 4.6,
+    ),
+    ItemModel(
+      image: "assets/splash/splash.png",
+      title: "Cheeseburger",
+      subtitle: "Wendy's Burger",
+      rate: 4.6,
+    ),
+    ItemModel(
+      image: "assets/splash/splash.png",
+      title: "Cheeseburger",
+      subtitle: "Wendy's Burger",
+      rate: 4.6,
+    ),
+    ItemModel(
+      image: "assets/splash/splash.png",
+      title: "Cheeseburger",
+      subtitle: "Wendy's Burger",
+      rate: 4.6,
+    ),
+    ItemModel(
+      image: "assets/splash/splash.png",
+      title: "Cheeseburger",
+      subtitle: "Wendy's Burger",
+      rate: 4.6,
+    ),
+    ItemModel(
+      image: "assets/splash/splash.png",
+      title: "Cheeseburger",
+      subtitle: "Wendy's Burger",
+      rate: 4.6,
+    ),
+    ItemModel(
+      image: "assets/splash/splash.png",
+      title: "ChickenBurger",
+      subtitle: "Wendy's Burger",
+      rate: 4.8,
+    ),
+  ];
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text("Home"),),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        body: CustomScrollView(
+          physics: BouncingScrollPhysics(),
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  children: const [
+                    Gap(80),
+                    Header(),
+                    Gap(20),
+                    SearchTextField(),
+                    Gap(20),
+                  ],
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Column(children: const [Categories(), Gap(10)]),
+            ),
+            SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              sliver: SliverGrid(
+                delegate: SliverChildBuilderDelegate(
+                  childCount: items.length,
+                  (context, index) => GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ProductView()),
+                      );
+                    },
+                    child: ItemWidget(item: items[index]),
+                  ),
+                ),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 0.75,
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
