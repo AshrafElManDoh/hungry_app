@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:hungry_app/features/orderHistory/views/widgets/order_history_widget.dart';
 
 class OrderHistoryView extends StatelessWidget {
   const OrderHistoryView({super.key});
@@ -6,7 +8,14 @@ class OrderHistoryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text("Order history"),),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: ListView.separated(
+          itemBuilder: (context, index) => OrderHistoryWidget(),
+          separatorBuilder: (context, index) => Gap(10),
+          itemCount: 5,
+        ),
+      ),
     );
   }
 }

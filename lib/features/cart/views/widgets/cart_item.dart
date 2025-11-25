@@ -37,7 +37,7 @@ class CartItem extends StatelessWidget {
               children: [
                 CounterWidget(value: count, onChanged: onChanged),
                 Gap(16),
-                CartBtn(),
+                CartBtn(title: "Remove",),
               ],
             ),
           ],
