@@ -4,8 +4,8 @@ import 'package:gap/gap.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../cart/views/widgets/cart_btn.dart';
 
-class OrderHistoryWidget extends StatelessWidget {
-  const OrderHistoryWidget({super.key});
+class OrderHistoryItem extends StatelessWidget {
+  const OrderHistoryItem({super.key});
 
   @override
   Widget build(BuildContext context) {

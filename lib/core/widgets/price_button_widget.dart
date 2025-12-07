@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import '../constants/app_colors.dart';
 import '../utils/app_styles.dart';
+import 'general_btn.dart';
 
 class PriceButtonWidget extends StatelessWidget {
   const PriceButtonWidget({
@@ -33,20 +33,7 @@ class PriceButtonWidget extends StatelessWidget {
                 Text("\$ 18.9", style: AppStyles.style32()),
               ],
             ),
-            GestureDetector(
-              onTap: onTap,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  titleButton,
-                  style: AppStyles.style18().copyWith(color: Colors.white),
-                ),
-              ),
-            ),
+            GeneralBtn(onTap: onTap, titleButton: titleButton),
           ],
         ),
       ),

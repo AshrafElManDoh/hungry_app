@@ -10,7 +10,8 @@ abstract class AppStyles {
     color: Color(0xff7D7D7D),
     fontWeight: FontWeight.w500,
   );
-
+  static TextStyle style20() =>
+      TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w700);
   static TextStyle style32() =>
       TextStyle(fontSize: 32, color: Colors.black, fontWeight: FontWeight.w400);
 }
