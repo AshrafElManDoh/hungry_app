@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 
 class Categories extends StatefulWidget {
@@ -17,31 +18,37 @@ class _CategoriesState extends State<Categories> {
       scrollDirection: Axis.horizontal,
       child: Row(
         spacing: 10,
-        children: List.generate(
-          categories.length,
-          (index) => GestureDetector(
-            onTap: (){
-              setState(() {
-                selectedCategory = index ;
-              });
-            },
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-              decoration: BoxDecoration(
-                color: selectedCategory == index
-                    ? AppColors.primaryColor
-                    : Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: Text(
-                categories[index],
-                style: TextStyle(
-                  color: selectedCategory == index ? Colors.white : Colors.black,
+        children: [
+          Gap(10),
+          ...List.generate(
+            categories.length,
+            (index) => GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedCategory = index;
+                });
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                decoration: BoxDecoration(
+                  color: selectedCategory == index
+                      ? AppColors.primaryColor
+                      : Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: Text(
+                  categories[index],
+                  style: TextStyle(
+                    color: selectedCategory == index
+                        ? Colors.white
+                        : Colors.black,
+                  ),
                 ),
               ),
             ),
           ),
-        ),
+          Gap(10),
+        ],
       ),
     );
   }

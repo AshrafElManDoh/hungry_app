@@ -7,7 +7,7 @@ import 'package:hungry_app/core/widgets/general_btn.dart';
 import 'package:hungry_app/core/widgets/price_button_widget.dart';
 import 'package:hungry_app/features/checkout/views/widgets/order_summary_section.dart';
 import 'package:hungry_app/features/checkout/views/widgets/payment_method_section.dart';
-import 'package:hungry_app/features/home/views/home_view.dart';
+import 'package:hungry_app/root.dart';
 
 class CheckoutView extends StatelessWidget {
   const CheckoutView({super.key});
@@ -75,7 +75,7 @@ class CheckoutView extends StatelessWidget {
                 onTap: () {
                   Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => HomeView()),
+                    MaterialPageRoute(builder: (context) => Root()),
                     (route) => false,
                   );
                 },

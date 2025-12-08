@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/widgets/price_button_widget.dart';
 import 'package:hungry_app/features/cart/views/widgets/cart_item.dart';
+import 'package:hungry_app/features/checkout/views/checkout_view.dart';
 
 class CartView extends StatefulWidget {
   const CartView({super.key});
@@ -36,7 +37,10 @@ class _CartViewState extends State<CartView> {
       ),
       bottomNavigationBar: PriceButtonWidget(
         titleButton: "Check out",
-        onTap: () {},
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CheckoutView()),
+        ),
       ),
     );
   }
