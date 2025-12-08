@@ -10,9 +10,10 @@ class ProfileTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
         labelText: labelText,
-        labelStyle: AppStyles.style16().copyWith(color: Colors.white),
+        labelStyle: AppStyles.style16().copyWith(color: Colors.grey),
         border: buildOutlineInputBorder(),
         enabledBorder: buildOutlineInputBorder(),
         focusedBorder: buildOutlineInputBorder(),

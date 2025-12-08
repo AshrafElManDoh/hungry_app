@@ -60,9 +60,10 @@ class _LoginViewState extends State<LoginView> {
                     title: "Login",
                     onTap: () {
                       if (formKey.currentState!.validate()) {
-                        Navigator.push(
+                        Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(builder: (c) => Root()),
+                          (route) => false,
                         );
                       }
                     },
@@ -78,12 +79,7 @@ class _LoginViewState extends State<LoginView> {
                       Gap(10),
                       UnderlinedText(
                         title: "sign up",
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginView(),
-                          ),
-                        ),
+                        onTap: () => Navigator.pop(context),
                       ),
                     ],
                   ),
