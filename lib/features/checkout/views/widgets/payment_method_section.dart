@@ -22,27 +22,37 @@ class _PaymentMethodSectionState extends State<PaymentMethodSection> {
       children: [
         Text("Payment method", style: AppStyles.style20()),
         Gap(20),
-        PaymentItem(
-          selectedValue: selectedValue,
-          tileColor: Color(0xff3C2F2F),
-          title: "Cash on Delivery",
-          value: "cash",
-          imagePath: "assets/icon/cash.png",
-          onChanged: (v) {
-            setState(() => selectedValue = v!);
+        GestureDetector(
+           onTap: () {
+            setState(() => selectedValue = 'cash');
           },
+          child: PaymentItem(
+            selectedValue: selectedValue,
+            tileColor: Color(0xff3C2F2F),
+            title: "Cash on Delivery",
+            value: "cash",
+            imagePath: "assets/icon/cash.png",
+            onChanged: (v) {
+              setState(() => selectedValue = v!);
+            },
+          ),
         ),
         Gap(20),
-        PaymentItem(
-          selectedValue: selectedValue,
-          onChanged: (v) {
-            setState(() => selectedValue = v!);
+        GestureDetector(
+          onTap: () {
+            setState(() => selectedValue = 'card');
           },
-          tileColor: Colors.black,
-          imagePath: "assets/icon/visa.png",
-          title: "Debit card",
-          subTitle: "xxxx xxxx xxxx 2501",
-          value: "card",
+          child: PaymentItem(
+            selectedValue: selectedValue,
+            onChanged: (v) {
+              setState(() => selectedValue = v!);
+            },
+            tileColor: Colors.black,
+            imagePath: "assets/icon/visa.png",
+            title: "Debit card",
+            subTitle: "xxxx xxxx xxxx 2501",
+            value: "card",
+          ),
         ),
         Gap(10),
         Row(

@@ -79,6 +79,10 @@ class _HomeViewState extends State<HomeView> {
   ];
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final itemWidth = (size.width - 16 * 2 - 10) / 2;
+    final itemHeight = itemWidth * 1.5;
+    final aspectRatio = itemWidth / itemHeight;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -118,7 +122,7 @@ class _HomeViewState extends State<HomeView> {
                   ),
                 ),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 0.75,
+                  childAspectRatio: aspectRatio,
                   crossAxisCount: 2,
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
