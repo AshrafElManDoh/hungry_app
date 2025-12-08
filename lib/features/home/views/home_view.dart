@@ -129,6 +129,7 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
             ),
+            SliverToBoxAdapter(child: Gap(110),),
           ],
         ),
       ),

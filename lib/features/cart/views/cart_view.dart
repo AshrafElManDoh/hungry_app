@@ -35,7 +35,8 @@ class _CartViewState extends State<CartView> {
           itemCount: 5,
         ),
       ),
-      bottomNavigationBar: PriceButtonWidget(
+      bottomSheet: PriceButtonWidget(
+        isBottomNavBar: false,
         titleButton: "Check out",
         onTap: () => Navigator.push(
           context,
