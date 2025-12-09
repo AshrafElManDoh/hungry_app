@@ -7,8 +7,8 @@ import 'package:hungry_app/features/auth/views/widgets/custom_email_field.dart';
 import 'package:hungry_app/features/auth/views/widgets/custom_pass_field.dart';
 import 'package:hungry_app/root.dart';
 
-import '../../../../core/constants/app_colors.dart';
-import 'custom_btn.dart';
+import '../../../core/constants/app_colors.dart';
+import 'widgets/custom_btn.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});

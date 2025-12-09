@@ -2,6 +2,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class AppPrefHelpers {
   static const String tokenKey = "token";
+  static const String usernameKey = "username";
+  static const String emailKey = "email";
 
   static late SharedPreferences _prefs;
 

@@ -7,7 +7,7 @@ import 'package:hungry_app/core/widgets/underlined_text.dart';
 import 'package:hungry_app/features/auth/views/widgets/custom_btn.dart';
 import 'package:hungry_app/features/auth/views/widgets/custom_email_field.dart';
 import 'package:hungry_app/features/auth/views/widgets/custom_pass_field.dart';
-import 'package:hungry_app/features/auth/views/widgets/login_view.dart';
+import 'package:hungry_app/features/auth/views/login_view.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
