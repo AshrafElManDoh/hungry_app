@@ -28,4 +28,23 @@ class AuthRepoImp implements AuthRepo {
       }
     }
   }
+
+  @override
+  Future<Either<ApiErrors, UserModel>> singup({
+    required String email,
+    required String password,
+    required String name,
+  })async {
+    final data = {"email": email, "name": name, "password": password};
+    try {
+      var resonse = await apiServices.post(endPoints: "/register", data: data);
+      return right(UserModel.fromJson(resonse["data"]));
+    } catch (e) {
+      if (e is DioException) {
+        return left(ApiExceptions.handleError(e));
+      } else {
+        return left(ApiErrors(message: e.toString()));
+      }
+    }
+  }
 }

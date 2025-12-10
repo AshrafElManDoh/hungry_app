@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/utils/app_styles.dart';
 import 'package:hungry_app/core/widgets/underlined_text.dart';
+import 'package:hungry_app/features/auth/cubits/auth_cubit/auth_cubit.dart';
 import 'package:hungry_app/features/auth/views/widgets/custom_btn.dart';
 import 'package:hungry_app/features/auth/views/widgets/custom_email_field.dart';
 import 'package:hungry_app/features/auth/views/widgets/custom_pass_field.dart';
 import 'package:hungry_app/features/auth/views/login_view.dart';
+import 'package:hungry_app/root.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
@@ -19,8 +23,7 @@ class SignUpView extends StatefulWidget {
 class _SignUpViewState extends State<SignUpView> {
   late TextEditingController emailController;
   late TextEditingController passController;
-  late TextEditingController confirmController;
-  late TextEditingController phoneController;
+  late TextEditingController nameController;
   late GlobalKey<FormState> formKey;
 
   @override
@@ -29,8 +32,7 @@ class _SignUpViewState extends State<SignUpView> {
     formKey = GlobalKey<FormState>();
     emailController = TextEditingController();
     passController = TextEditingController();
-    confirmController = TextEditingController();
-    phoneController = TextEditingController();
+    nameController = TextEditingController();
   }
 
   @override
@@ -38,8 +40,7 @@ class _SignUpViewState extends State<SignUpView> {
     super.dispose();
     emailController.dispose();
     passController.dispose();
-    confirmController.dispose();
-    phoneController.dispose();
+    nameController.dispose();
   }
 
   @override
@@ -50,65 +51,95 @@ class _SignUpViewState extends State<SignUpView> {
       },
       child: Scaffold(
         backgroundColor: AppColors.primaryColor,
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.only(
-              left: 16,
-              right: 16,
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: Form(
-              key: formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Gap(120),
-                  SvgPicture.asset("assets/logo/hungry.svg"),
-                  Gap(50),
-                  CustomEmailField(hint: "Email", controller: emailController),
-                  Gap(10),
-                  CustomPassField(hint: "Password", controller: passController),
-                  Gap(10),
-                  CustomPassField(
-                    hint: "Confirm Password",
-                    controller: confirmController,
+        body: BlocConsumer<AuthCubit, AuthState>(
+          listener: (context, state) {
+            if (state is AuthSuccess) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (c) => Root()),
+                (route) => false,
+              );
+            }
+            if (state is AuthFailed) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.msg)));
+            }
+          },
+          builder: (context, state) {
+            return ModalProgressHUD(
+              inAsyncCall: state is AuthLoading,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
                   ),
-                  Gap(10),
-                  CustomEmailField(hint: "Phone", controller: phoneController),
-                  Gap(50),
-                  CustomBtn(
-                    title: "Sign up",
-                    onTap: () {
-                      if (formKey.currentState!.validate()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (c) => LoginView()),
-                        );
-                      }
-                    },
-                  ),
-                  Gap(20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Have you an account?",
-                        style: AppStyles.style18().copyWith(color: Colors.grey),
-                      ),
-                      Gap(10),
-                      UnderlinedText(
-                        title: "Login",
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const LoginView()),
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Gap(120),
+                        SvgPicture.asset("assets/logo/hungry.svg"),
+                        Gap(50),
+                        CustomPassField(
+                          hint: "Name",
+                          controller: nameController,
                         ),
-                      ),
-                    ],
+                        Gap(10),
+                        CustomEmailField(
+                          hint: "Email",
+                          controller: emailController,
+                        ),
+                        Gap(10),
+                        CustomPassField(
+                          hint: "Password",
+                          controller: passController,
+                        ),
+                        Gap(50),
+                        CustomBtn(
+                          title: "Sign up",
+                          onTap: () {
+                            if (formKey.currentState!.validate()) {
+                              context.read<AuthCubit>().signup(
+                                email: emailController.text.trim(),
+                                password: passController.text.trim(),
+                                name: nameController.text.trim(),
+                              );
+                            }
+                          },
+                        ),
+                        Gap(20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Have you an account?",
+                              style: AppStyles.style18().copyWith(
+                                color: Colors.grey,
+                              ),
+                            ),
+                            Gap(10),
+                            UnderlinedText(
+                              title: "Login",
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const LoginView(),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );

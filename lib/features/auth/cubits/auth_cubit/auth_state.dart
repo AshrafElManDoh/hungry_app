@@ -13,6 +13,18 @@ final class AuthSuccess extends AuthState {
 
 final class AuthLoading extends AuthState {}
 
+final class AuthLoadProfileData extends AuthState {
+  final String name, email;
+  final String? address, password;
+
+  AuthLoadProfileData({
+    required this.name,
+    required this.email,
+    this.address,
+    this.password,
+  });
+}
+
 final class AuthFailed extends AuthState {
   final String msg;
 

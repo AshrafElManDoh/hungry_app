@@ -7,4 +7,9 @@ abstract class AuthRepo {
     required String email,
     required String password,
   });
+  Future<Either<ApiErrors, UserModel>> singup({
+    required String email,
+    required String password,
+    required String name ,
+  });
 }
