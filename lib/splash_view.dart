@@ -2,44 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
+import 'package:hungry_app/core/utils/app_pref_helpers.dart';
 import 'package:hungry_app/features/auth/views/sign_up_view.dart';
-
-// class SplashView extends StatefulWidget {
-//   const SplashView({super.key});
-
-//   @override
-//   State<SplashView> createState() => _SplashViewState();
-// }
-
-// class _SplashViewState extends State<SplashView> {
-//   @override
-//   void initState() {
-//     Future.delayed(
-//       Duration(seconds: 2),
-//       () => Navigator.pushReplacement(
-//         context,
-//         MaterialPageRoute(builder: (context) => SignUpView()),
-//       ),
-//     );
-//     super.initState();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: AppColors.primaryColor,
-//       body: Column(
-//         crossAxisAlignment: CrossAxisAlignment.center,
-//         children: [
-//           Gap(250),
-//           SvgPicture.asset("assets/logo/hungry.svg"),
-//           Spacer(),
-//           Image.asset("assets/splash/splash.png"),
-//         ],
-//       ),
-//     );
-//   }
-// }
+import 'package:hungry_app/root.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -51,42 +16,61 @@ class SplashView extends StatefulWidget {
 class _SplashViewState extends State<SplashView>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<double> fadeAnimation;
-  late Animation<Offset> slideAnimation;
-  late Animation<double> scaleAnimation;
+  late Animation<double> _fade;
+  late Animation<Offset> _slideLogo;
+  late Animation<Offset> _slideImage;
+  late Animation<double> _scale;
 
   @override
   void initState() {
     super.initState();
+    _initAnimations();
+    _startAppFlow();
+  }
 
+  void _initAnimations() {
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1200),
     );
 
-    fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
-    );
+    _fade = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
 
-    slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.4),
+    _slideLogo = Tween(
+      begin: const Offset(0, 0.3),
       end: Offset.zero,
-    ).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
-    scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOutBack),
-    );
+    _slideImage = Tween(
+      begin: const Offset(0, 0.1),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    _scale = Tween(
+      begin: 0.85,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutBack));
 
     _controller.forward();
+  }
 
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const SignUpView()),
-      );
-    });
+  void _startAppFlow() async {
+    await Future.delayed(const Duration(seconds: 2));
+
+    final isLogged =
+        AppPrefHelpers.loadData(AppPrefHelpers.usernameKey) != null;
+
+    if (!mounted) return;
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => isLogged ? const Root() : const SignUpView(),
+      ),
+    );
   }
 
   @override
@@ -103,13 +87,13 @@ class _SplashViewState extends State<SplashView>
         children: [
           const Gap(200),
 
-          /// LOGO ANIMATION
+          /// LOGO
           FadeTransition(
-            opacity: fadeAnimation,
+            opacity: _fade,
             child: SlideTransition(
-              position: slideAnimation,
+              position: _slideLogo,
               child: ScaleTransition(
-                scale: scaleAnimation,
+                scale: _scale,
                 child: SvgPicture.asset("assets/logo/hungry.svg"),
               ),
             ),
@@ -117,19 +101,11 @@ class _SplashViewState extends State<SplashView>
 
           const Spacer(),
 
-          /// IMAGE ANIMATION
+          /// IMAGE
           FadeTransition(
-            opacity: fadeAnimation,
+            opacity: _fade,
             child: SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(0, 0.2),
-                end: Offset.zero,
-              ).animate(
-                CurvedAnimation(
-                  parent: _controller,
-                  curve: Curves.easeOut,
-                ),
-              ),
+              position: _slideImage,
               child: Image.asset("assets/splash/splash.png"),
             ),
           ),
