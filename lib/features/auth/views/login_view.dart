@@ -5,7 +5,8 @@ import 'package:gap/gap.dart';
 import 'package:hungry_app/core/utils/app_styles.dart';
 import 'package:hungry_app/core/widgets/underlined_text.dart';
 import 'package:hungry_app/features/auth/cubits/auth_cubit/auth_cubit.dart';
-import 'package:hungry_app/features/auth/views/widgets/custom_email_field.dart';
+import 'package:hungry_app/features/auth/views/sign_up_view.dart';
+import 'package:hungry_app/features/auth/views/widgets/custom_text_field.dart';
 import 'package:hungry_app/features/auth/views/widgets/custom_pass_field.dart';
 import 'package:hungry_app/root.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -46,7 +47,6 @@ class _LoginViewState extends State<LoginView> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: AppColors.primaryColor,
-
         body: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state is AuthSuccess) {
@@ -81,7 +81,7 @@ class _LoginViewState extends State<LoginView> {
                         Gap(120),
                         SvgPicture.asset("assets/logo/hungry.svg"),
                         Gap(50),
-                        CustomEmailField(
+                        CustomTextField(
                           hint: "Email",
                           controller: emailController,
                         ),
@@ -115,7 +115,12 @@ class _LoginViewState extends State<LoginView> {
                             Gap(10),
                             UnderlinedText(
                               title: "sign up",
-                              onTap: () => Navigator.pop(context),
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SignUpView(),
+                                ),
+                              ),
                             ),
                           ],
                         ),

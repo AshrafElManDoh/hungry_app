@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
 
-class CustomEmailField extends StatelessWidget {
-  const CustomEmailField({super.key, required this.hint, required this.controller});
+class CustomTextField extends StatelessWidget {
+  const CustomTextField({super.key, required this.hint, required this.controller});
   final String hint ;
   final TextEditingController controller ;
 

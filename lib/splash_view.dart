@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/utils/app_pref_helpers.dart';
-import 'package:hungry_app/features/auth/views/sign_up_view.dart';
+import 'package:hungry_app/features/auth/views/login_view.dart';
 import 'package:hungry_app/root.dart';
 
 class SplashView extends StatefulWidget {
@@ -68,7 +68,7 @@ class _SplashViewState extends State<SplashView>
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (_) => isLogged ? const Root() : const SignUpView(),
+        builder: (_) => isLogged ? const Root() : const LoginView(),
       ),
     );
   }

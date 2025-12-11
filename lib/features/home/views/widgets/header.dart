@@ -6,11 +6,12 @@ import 'package:hungry_app/core/utils/app_pref_helpers.dart';
 import 'package:hungry_app/core/utils/app_styles.dart';
 
 class Header extends StatelessWidget {
-  const Header({super.key});
+  const Header({super.key, required this.name});
+  final String name ;
 
   @override
   Widget build(BuildContext context) {
-    final name = AppPrefHelpers.loadData(AppPrefHelpers.usernameKey) as String? ?? "";
+    
     return Row(
       children: [
         Column(

@@ -26,13 +26,19 @@ class _CartViewState extends State<CartView> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: ListView.separated(
-          itemBuilder: (context, index) => CartItem(
-            count: quantities[index],
-            onChanged: (newValue) => onChanged(newValue, index),
-          ),
-          separatorBuilder: (context, index) => Gap(10),
-          itemCount: 5,
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(child: Gap(40),),
+            SliverList.separated(
+              itemBuilder: (context, index) => CartItem(
+                count: quantities[index],
+                onChanged: (newValue) => onChanged(newValue, index),
+              ),
+              separatorBuilder: (context, index) => Gap(10),
+              itemCount: 5,
+            ),
+            SliverToBoxAdapter(child: Gap(200),),
+          ],
         ),
       ),
       bottomSheet: PriceButtonWidget(

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/features/auth/cubits/auth_cubit/auth_cubit.dart';
+import 'package:hungry_app/features/auth/views/login_view.dart';
 import 'package:hungry_app/features/auth/views/widgets/profile_btn.dart';
 import 'package:hungry_app/features/auth/views/widgets/profile_text_field.dart';
 import 'package:hungry_app/features/checkout/views/widgets/payment_item.dart';
@@ -15,7 +16,8 @@ class ProfileView extends StatefulWidget {
   State<ProfileView> createState() => _ProfileViewState();
 }
 
-class _ProfileViewState extends State<ProfileView> with AutomaticKeepAliveClientMixin {
+class _ProfileViewState extends State<ProfileView>
+    with AutomaticKeepAliveClientMixin {
   late TextEditingController _nameCont;
   late TextEditingController _emailCont;
   late TextEditingController _addCont;
@@ -26,7 +28,7 @@ class _ProfileViewState extends State<ProfileView> with AutomaticKeepAliveClient
     initControllers();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<AuthCubit>().setProfileData();
-    },);
+    });
     super.initState();
   }
 
@@ -93,7 +95,10 @@ class _ProfileViewState extends State<ProfileView> with AutomaticKeepAliveClient
                         ),
                       ),
                       Gap(40),
-                      ProfileTextField(controller: _nameCont, labelText: "Name"),
+                      ProfileTextField(
+                        controller: _nameCont,
+                        labelText: "Name",
+                      ),
                       Gap(10),
                       ProfileTextField(
                         controller: _emailCont,
@@ -132,6 +137,16 @@ class _ProfileViewState extends State<ProfileView> with AutomaticKeepAliveClient
                           ),
                           ProfileBtn(
                             text: "Log out",
+                            onTap: () {
+                              context.read<AuthCubit>().clearUser();
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginView(),
+                                ),
+                                (route) => false,
+                              );
+                            },
                             imagePath: "assets/svg/sign-out.svg",
                             isFilled: false,
                           ),
@@ -148,7 +163,7 @@ class _ProfileViewState extends State<ProfileView> with AutomaticKeepAliveClient
       ),
     );
   }
-  
+
   @override
   bool get wantKeepAlive => true;
 }

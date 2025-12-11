@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:hungry_app/core/utils/app_pref_helpers.dart';
 import 'package:hungry_app/features/home/data/item_model.dart';
 import 'package:hungry_app/features/home/views/widgets/categories.dart';
 import 'package:hungry_app/features/home/views/widgets/header.dart';
@@ -83,6 +84,7 @@ class _HomeViewState extends State<HomeView> {
     final itemWidth = (size.width - 16 * 2 - 10) / 2;
     final itemHeight = itemWidth * 1.5;
     final aspectRatio = itemWidth / itemHeight;
+    final name = AppPrefHelpers.loadData(AppPrefHelpers.usernameKey) as String? ?? "";
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -93,9 +95,9 @@ class _HomeViewState extends State<HomeView> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
-                  children: const [
+                  children: [
                     Gap(80),
-                    Header(),
+                    Header(name: name,),
                     Gap(20),
                     SearchTextField(),
                     Gap(20),

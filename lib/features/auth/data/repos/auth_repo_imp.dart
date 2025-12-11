@@ -18,7 +18,7 @@ class AuthRepoImp implements AuthRepo {
   }) async {
     final data = {"email": email, "password": password};
     try {
-      var resonse = await apiServices.post(endPoints: "/login", data: data);
+      final resonse = await apiServices.post(endPoints: "/login", data: data);
       return right(UserModel.fromJson(resonse["data"]));
     } catch (e) {
       if (e is DioException) {

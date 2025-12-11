@@ -32,6 +32,7 @@ class AuthCubit extends Cubit<AuthState> {
     required String password,
     required String name,
   }) async {
+    emit(AuthLoading());
     var resonse = await _authRepo.singup(
       email: email,
       password: password,
@@ -58,6 +59,10 @@ class AuthCubit extends Cubit<AuthState> {
     log(email);
     log(name);
     emit(AuthLoadProfileData(name: name, email: email));
+  }
+
+  Future<void> clearUser()async{
+    await AppPrefHelpers.clearData();
   }
 
   void saveUser(UserModel userModel) async {
