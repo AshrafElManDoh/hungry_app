@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -7,7 +9,7 @@ import 'package:hungry_app/features/auth/views/login_view.dart';
 import 'package:hungry_app/features/auth/views/widgets/profile_btn.dart';
 import 'package:hungry_app/features/auth/views/widgets/profile_text_field.dart';
 import 'package:hungry_app/features/checkout/views/widgets/payment_item.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -21,7 +23,7 @@ class _ProfileViewState extends State<ProfileView>
   late TextEditingController _nameCont;
   late TextEditingController _emailCont;
   late TextEditingController _addCont;
-  late TextEditingController _passCont;
+  String visa = "xxxx xxxx xxxx xxxx";
 
   @override
   void initState() {
@@ -32,29 +34,28 @@ class _ProfileViewState extends State<ProfileView>
     super.initState();
   }
 
-  initControllers() {
-    _nameCont = TextEditingController();
-    _emailCont = TextEditingController();
-    _addCont = TextEditingController();
-    _passCont = TextEditingController();
-  }
-
   @override
   void dispose() {
     disposeControllers();
     super.dispose();
   }
 
+  initControllers() {
+    _nameCont = TextEditingController();
+    _emailCont = TextEditingController();
+    _addCont = TextEditingController();
+  }
+
   disposeControllers() {
     _nameCont.dispose();
     _addCont.dispose();
     _emailCont.dispose();
-    _passCont.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final cubit = context.watch<AuthCubit>();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -73,11 +74,19 @@ class _ProfileViewState extends State<ProfileView>
             if (state is AuthLoadProfileData) {
               _nameCont.text = state.name;
               _emailCont.text = state.email;
+              _addCont.text = state.address!;
+              cubit.selectedImage = state.image;
+              visa = state.visa.toString();
             }
           },
           builder: (context, state) {
-            return ModalProgressHUD(
-              inAsyncCall: state is AuthLoading,
+            return Skeletonizer(
+              enabled: state is AuthLoading,
+              enableSwitchAnimation: true,
+              effect: ShimmerEffect(
+                baseColor: Colors.grey.shade600,
+                highlightColor: Colors.grey.shade100,
+              ),
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -89,9 +98,24 @@ class _ProfileViewState extends State<ProfileView>
                         width: 130,
                         height: 130,
                         decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(15),
+                          shape: BoxShape.circle,
+                          image: cubit.selectedImage == null
+                              ? null
+                              : DecorationImage(
+                                  image: cubit.isGalleryImage
+                                      ? FileImage(File(cubit.selectedImage!))
+                                      : NetworkImage(cubit.selectedImage!),
+                                ),
                           border: Border.all(color: Colors.white, width: 3),
+                        ),
+                      ),
+                      Gap(20),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 100),
+                        child: ProfileBtn(
+                          text: "Change Image",
+                          isFilled: true,
+                          onTap: context.read<AuthCubit>().pickImage,
                         ),
                       ),
                       Gap(40),
@@ -109,11 +133,6 @@ class _ProfileViewState extends State<ProfileView>
                         controller: _addCont,
                         labelText: "Address",
                       ),
-                      Gap(10),
-                      ProfileTextField(
-                        controller: _passCont,
-                        labelText: "Password",
-                      ),
                       Gap(40),
                       Divider(color: Colors.white),
                       Gap(40),
@@ -121,7 +140,7 @@ class _ProfileViewState extends State<ProfileView>
                         selectedValue: "cart",
                         onChanged: (c) {},
                         tileColor: Colors.black,
-                        subTitle: "xxxx xxxx xxxx 0261",
+                        subTitle: visa,
                         title: "Debit card",
                         value: "card",
                         imagePath: "assets/icon/visa.png",
@@ -132,8 +151,16 @@ class _ProfileViewState extends State<ProfileView>
                         children: [
                           ProfileBtn(
                             text: "Edit Profile",
-                            imagePath: "assets/svg/edit.svg",
+                            iconPath: "assets/svg/edit.svg",
                             isFilled: true,
+                            onTap: () {
+                              cubit.updateProfile(
+                                email: _emailCont.text,
+                                name: _nameCont.text,
+                                address: _addCont.text,
+                                visa: "xxxx xxxx xxxx 5894",
+                              );
+                            },
                           ),
                           ProfileBtn(
                             text: "Log out",
@@ -147,7 +174,7 @@ class _ProfileViewState extends State<ProfileView>
                                 (route) => false,
                               );
                             },
-                            imagePath: "assets/svg/sign-out.svg",
+                            iconPath: "assets/svg/sign-out.svg",
                             isFilled: false,
                           ),
                         ],

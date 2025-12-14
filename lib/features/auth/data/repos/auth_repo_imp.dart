@@ -34,10 +34,58 @@ class AuthRepoImp implements AuthRepo {
     required String email,
     required String password,
     required String name,
-  })async {
+  }) async {
     final data = {"email": email, "name": name, "password": password};
     try {
       var resonse = await apiServices.post(endPoints: "/register", data: data);
+      return right(UserModel.fromJson(resonse["data"]));
+    } catch (e) {
+      if (e is DioException) {
+        return left(ApiExceptions.handleError(e));
+      } else {
+        return left(ApiErrors(message: e.toString()));
+      }
+    }
+  }
+
+  @override
+  Future<Either<ApiErrors, UserModel>> getProfileData() async {
+    try {
+      var resonse = await apiServices.get(endPoints: "/profile");
+      return right(UserModel.fromJson(resonse["data"]));
+    } catch (e) {
+      if (e is DioException) {
+        return left(ApiExceptions.handleError(e));
+      } else {
+        return left(ApiErrors(message: e.toString()));
+      }
+    }
+  }
+
+  @override
+  Future<Either<ApiErrors, UserModel>> updateProfile({
+    required String email,
+    required String name,
+    String? address,
+    String? imagePath,
+    String? visa,
+  }) async {
+    final FormData data = FormData.fromMap({
+      "name": name,
+      "email": email,
+      if (address != null) "address": address,
+      if (visa != null && visa.isNotEmpty) "Visa": visa,
+      if (imagePath != null && imagePath.isNotEmpty)
+        "image": await MultipartFile.fromFile(
+          imagePath,
+          // filename: "profile.jpg",
+        ),
+    });
+    try {
+      var resonse = await apiServices.post(
+        endPoints: "/update-profile",
+        data: data,
+      );
       return right(UserModel.fromJson(resonse["data"]));
     } catch (e) {
       if (e is DioException) {

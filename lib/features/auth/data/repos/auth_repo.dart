@@ -10,6 +10,14 @@ abstract class AuthRepo {
   Future<Either<ApiErrors, UserModel>> singup({
     required String email,
     required String password,
-    required String name ,
+    required String name,
+  });
+  Future<Either<ApiErrors, UserModel>> getProfileData();
+  Future<Either<ApiErrors, UserModel>> updateProfile({
+    required String email,
+    required String name,
+    String? address,
+    String? imagePath,
+    String? visa,
   });
 }

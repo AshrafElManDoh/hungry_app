@@ -5,7 +5,7 @@ class ApiServices {
 
   Future<dynamic> post({
     required String endPoints,
-    required Map<String, dynamic> data,
+    required dynamic data,
   }) async {
     var response = await _dio.post(endPoints, data: data);
     return response.data;
@@ -29,7 +29,7 @@ class ApiServices {
 
   Future<dynamic> get({
     required String endPoints,
-    required Map<String, dynamic>? data,
+    Map<String, dynamic>? data,
   }) async {
     var response = await _dio.get(endPoints, data: data);
     return response.data;

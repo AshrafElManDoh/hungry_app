@@ -10,10 +10,10 @@ class ProfileBtn extends StatelessWidget {
     required this.text,
     required this.isFilled,
     this.onTap,
-    required this.imagePath,
+    this.iconPath,
   });
   final String text;
-  final String imagePath;
+  final String? iconPath;
   final bool isFilled;
   final Function()? onTap;
 
@@ -29,6 +29,7 @@ class ProfileBtn extends StatelessWidget {
           border: isFilled ? null : Border.all(color: Colors.white),
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               text,
@@ -36,8 +37,10 @@ class ProfileBtn extends StatelessWidget {
                 color: isFilled ? AppColors.primaryColor : Colors.white,
               ),
             ),
-            Gap(5),
-            SvgPicture.asset(imagePath,height: 16,),
+            iconPath != null ? Gap(5) : SizedBox.shrink(),
+            iconPath != null
+                ? SvgPicture.asset(iconPath!, height: 16)
+                : SizedBox.shrink(),
           ],
         ),
       ),

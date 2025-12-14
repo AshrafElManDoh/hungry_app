@@ -13,15 +13,18 @@ final class AuthSuccess extends AuthState {
 
 final class AuthLoading extends AuthState {}
 
+final class AuthSelectGalleryImage extends AuthState {}
+
 final class AuthLoadProfileData extends AuthState {
   final String name, email;
-  final String? address, password;
+  final String? address, visa, image;
 
   AuthLoadProfileData({
     required this.name,
+    this.image,
     required this.email,
     this.address,
-    this.password,
+    this.visa,
   });
 }
 
