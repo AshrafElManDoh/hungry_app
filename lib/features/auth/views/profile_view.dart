@@ -1,10 +1,13 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/features/auth/cubits/auth_cubit/auth_cubit.dart';
+import 'package:hungry_app/features/auth/views/add_card_view.dart';
 import 'package:hungry_app/features/auth/views/login_view.dart';
 import 'package:hungry_app/features/auth/views/widgets/profile_btn.dart';
 import 'package:hungry_app/features/auth/views/widgets/profile_text_field.dart';
@@ -23,13 +26,12 @@ class _ProfileViewState extends State<ProfileView>
   late TextEditingController _nameCont;
   late TextEditingController _emailCont;
   late TextEditingController _addCont;
-  String visa = "xxxx xxxx xxxx xxxx";
 
   @override
   void initState() {
     initControllers();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<AuthCubit>().setProfileData();
+      context.read<AuthCubit>().getProfileData();
     });
     super.initState();
   }
@@ -76,7 +78,7 @@ class _ProfileViewState extends State<ProfileView>
               _emailCont.text = state.email;
               _addCont.text = state.address!;
               cubit.selectedImage = state.image;
-              visa = state.visa.toString();
+              cubit.visa = state.visa;
             }
           },
           builder: (context, state) {
@@ -87,100 +89,129 @@ class _ProfileViewState extends State<ProfileView>
                 baseColor: Colors.grey.shade600,
                 highlightColor: Colors.grey.shade100,
               ),
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Gap(30),
-                      Container(
-                        width: 130,
-                        height: 130,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: cubit.selectedImage == null
-                              ? null
-                              : DecorationImage(
-                                  image: cubit.isGalleryImage
-                                      ? FileImage(File(cubit.selectedImage!))
-                                      : NetworkImage(cubit.selectedImage!),
-                                ),
-                          border: Border.all(color: Colors.white, width: 3),
+              child: RefreshIndicator(
+                onRefresh: () => cubit.getProfileData(),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Gap(30),
+                        CircleAvatar(
+                          radius: 67,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            radius: 65,
+                            backgroundColor: Colors.grey,
+                            child: cubit.selectedImage == null
+                                ? Icon(
+                                    Icons.person,
+                                    color: Colors.white,
+                                    size: 40,
+                                  )
+                                : cubit.isGalleryImage
+                                ? Image.file(
+                                    File(cubit.selectedImage!),
+                                    fit: BoxFit.cover,
+                                  )
+                                : CachedNetworkImage(
+                                    imageUrl: cubit.selectedImage!,
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) => Center(
+                                      child: CupertinoActivityIndicator(),
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.error, color: Colors.red),
+                                  ),
+                          ),
                         ),
-                      ),
-                      Gap(20),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 100),
-                        child: ProfileBtn(
-                          text: "Change Image",
-                          isFilled: true,
-                          onTap: context.read<AuthCubit>().pickImage,
-                        ),
-                      ),
-                      Gap(40),
-                      ProfileTextField(
-                        controller: _nameCont,
-                        labelText: "Name",
-                      ),
-                      Gap(10),
-                      ProfileTextField(
-                        controller: _emailCont,
-                        labelText: "Email",
-                      ),
-                      Gap(10),
-                      ProfileTextField(
-                        controller: _addCont,
-                        labelText: "Address",
-                      ),
-                      Gap(40),
-                      Divider(color: Colors.white),
-                      Gap(40),
-                      PaymentItem(
-                        selectedValue: "cart",
-                        onChanged: (c) {},
-                        tileColor: Colors.black,
-                        subTitle: visa,
-                        title: "Debit card",
-                        value: "card",
-                        imagePath: "assets/icon/visa.png",
-                      ),
-                      Gap(40),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ProfileBtn(
-                            text: "Edit Profile",
-                            iconPath: "assets/svg/edit.svg",
+                        Gap(20),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.4,
+                          child: ProfileBtn(
+                            text: "Change Image",
                             isFilled: true,
-                            onTap: () {
-                              cubit.updateProfile(
-                                email: _emailCont.text,
-                                name: _nameCont.text,
-                                address: _addCont.text,
-                                visa: "xxxx xxxx xxxx 5894",
-                              );
-                            },
+                            onTap: context.read<AuthCubit>().pickImage,
                           ),
-                          ProfileBtn(
-                            text: "Log out",
-                            onTap: () {
-                              context.read<AuthCubit>().clearUser();
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LoginView(),
+                        ),
+                        Gap(40),
+                        ProfileTextField(
+                          controller: _nameCont,
+                          labelText: "Name",
+                        ),
+                        Gap(10),
+                        ProfileTextField(
+                          controller: _emailCont,
+                          labelText: "Email",
+                        ),
+                        Gap(10),
+                        ProfileTextField(
+                          controller: _addCont,
+                          labelText: "Address",
+                        ),
+                        Gap(40),
+                        Divider(color: Colors.white),
+                        Gap(40),
+
+                        ///visa
+                        cubit.visa == null || cubit.visa!.isEmpty
+                            ? ProfileBtn(
+                                text: "Add visa",
+                                isFilled: true,
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const AddCardView(),
+                                  ),
                                 ),
-                                (route) => false,
-                              );
-                            },
-                            iconPath: "assets/svg/sign-out.svg",
-                            isFilled: false,
-                          ),
-                        ],
-                      ),
-                      Gap(110),
-                    ],
+                              )
+                            : PaymentItem(
+                                selectedValue: "cart",
+                                onChanged: (c) {},
+                                tileColor: Colors.black,
+                                subTitle: cubit.visa,
+                                title: "Debit card",
+                                value: "card",
+                                imagePath: "assets/icon/visa.png",
+                              ),
+                        Gap(40),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ProfileBtn(
+                              text: "Edit Profile",
+                              iconPath: "assets/svg/edit.svg",
+                              isFilled: true,
+                              onTap: () {
+                                cubit.updateProfile(
+                                  email: _emailCont.text,
+                                  name: _nameCont.text,
+                                  address: _addCont.text,
+                                  visa: cubit.visa,
+                                );
+                              },
+                            ),
+                            ProfileBtn(
+                              text: "Log out",
+                              onTap: () async {
+                                await context.read<AuthCubit>().clearUser();
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LoginView(),
+                                  ),
+                                  (route) => false,
+                                );
+                              },
+                              iconPath: "assets/svg/sign-out.svg",
+                              isFilled: false,
+                            ),
+                          ],
+                        ),
+                        Gap(110),
+                      ],
+                    ),
                   ),
                 ),
               ),

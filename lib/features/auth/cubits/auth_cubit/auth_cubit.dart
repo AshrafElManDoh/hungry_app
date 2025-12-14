@@ -15,6 +15,7 @@ class AuthCubit extends Cubit<AuthState> {
   final AuthRepo _authRepo;
   String? selectedImage;
   bool isGalleryImage = false;
+  String? visa = '';
 
   login({required String email, required String password}) async {
     emit(AuthLoading());
@@ -52,7 +53,7 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  setProfileData() async {
+  getProfileData() async {
     emit(AuthLoading());
     var resonse = await _authRepo.getProfileData();
     resonse.fold(
@@ -84,7 +85,7 @@ class AuthCubit extends Cubit<AuthState> {
         isGalleryImage && selectedImage != null && selectedImage!.isNotEmpty
         ? selectedImage
         : null;
-        log(image??"It's null");
+    log(image ?? "It's null");
     var resonse = await _authRepo.updateProfile(
       email: email,
       name: name,
@@ -123,8 +124,23 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthSelectGalleryImage());
   }
 
+  setCard(String cardNumber) {
+    visa = cardNumber;
+    emit(AuthAddedCard());
+  }
+
   Future<void> clearUser() async {
-    await AppPrefHelpers.clearData();
+    // emit(AuthLoading());
+    var resonse = await _authRepo.logout();
+    resonse.fold(
+      (apiError) {
+        emit(AuthFailed(msg: apiError.message));
+      },
+      (message) async {
+        await AppPrefHelpers.clearData();
+        emit(AuthLogOut());
+      },
+    );
   }
 
   void saveUser(UserModel userModel) async {

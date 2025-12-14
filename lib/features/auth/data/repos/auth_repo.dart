@@ -20,4 +20,6 @@ abstract class AuthRepo {
     String? imagePath,
     String? visa,
   });
+
+  Future<Either<ApiErrors , String>> logout() ;
 }

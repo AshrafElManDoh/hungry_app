@@ -95,4 +95,18 @@ class AuthRepoImp implements AuthRepo {
       }
     }
   }
+
+  @override
+  Future<Either<ApiErrors, String>> logout() async {
+    try {
+      var resonse = await apiServices.post(endPoints: "/logout", data: null);
+      return right(resonse["message"]);
+    } catch (e) {
+      if (e is DioException) {
+        return left(ApiExceptions.handleError(e));
+      } else {
+        return left(ApiErrors(message: e.toString()));
+      }
+    }
+  }
 }

@@ -34,7 +34,7 @@ class ProfileBtn extends StatelessWidget {
             Text(
               text,
               style: AppStyles.style18().copyWith(
-                color: isFilled ? AppColors.primaryColor : Colors.white,
+                color: isFilled ? AppColors.primaryColor : Colors.white
               ),
             ),
             iconPath != null ? Gap(5) : SizedBox.shrink(),
