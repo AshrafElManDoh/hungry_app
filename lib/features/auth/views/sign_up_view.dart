@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/utils/app_styles.dart';
+import 'package:hungry_app/core/widgets/custom_indicator.dart';
 import 'package:hungry_app/core/widgets/underlined_text.dart';
 import 'package:hungry_app/features/auth/cubits/auth_cubit/auth_cubit.dart';
 import 'package:hungry_app/features/auth/views/widgets/custom_btn.dart';
@@ -68,6 +69,7 @@ class _SignUpViewState extends State<SignUpView> {
           builder: (context, state) {
             return ModalProgressHUD(
               inAsyncCall: state is AuthLoading,
+              progressIndicator: CustomIndicator(),
               child: SingleChildScrollView(
                 child: Padding(
                   padding: EdgeInsets.only(

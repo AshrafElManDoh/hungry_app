@@ -17,7 +17,7 @@ class PriceButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: isBottomNavBar ? 100 : 175,
+      height: isBottomNavBar ? 100 : 185,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
         child: Row(

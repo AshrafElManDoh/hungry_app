@@ -80,10 +80,10 @@ class _HomeViewState extends State<HomeView> {
   ];
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final itemWidth = (size.width - 16 * 2 - 10) / 2;
-    final itemHeight = itemWidth * 1.5;
-    final aspectRatio = itemWidth / itemHeight;
+    // final size = MediaQuery.of(context).size;
+    // final itemWidth = (size.width - 16 * 2 - 10) / 2;
+    // final itemHeight = itemWidth * 1.5;
+    // final aspectRatio = itemWidth / itemHeight;
     final name = AppPrefHelpers.loadData(AppPrefHelpers.usernameKey) as String? ?? "";
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -124,7 +124,7 @@ class _HomeViewState extends State<HomeView> {
                   ),
                 ),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: aspectRatio,
+                  childAspectRatio: 0.65,
                   crossAxisCount: 2,
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,

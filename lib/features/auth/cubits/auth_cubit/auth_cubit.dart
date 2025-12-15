@@ -130,7 +130,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> clearUser() async {
-    // emit(AuthLoading());
+    emit(AuthLogoutLoading());
     var resonse = await _authRepo.logout();
     resonse.fold(
       (apiError) {

@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/utils/app_styles.dart';
+import 'package:hungry_app/core/widgets/custom_indicator.dart';
 import 'package:hungry_app/core/widgets/underlined_text.dart';
 import 'package:hungry_app/features/auth/cubits/auth_cubit/auth_cubit.dart';
 import 'package:hungry_app/features/auth/views/sign_up_view.dart';
@@ -66,6 +68,7 @@ class _LoginViewState extends State<LoginView> {
           builder: (context, state) {
             return ModalProgressHUD(
               inAsyncCall: state is AuthLoading,
+              progressIndicator: CustomIndicator(),
               child: SingleChildScrollView(
                 child: Padding(
                   padding: EdgeInsets.only(

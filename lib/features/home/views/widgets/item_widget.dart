@@ -19,13 +19,14 @@ class ItemWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(item.image, height: 120),
+            AspectRatio(aspectRatio: 1,child: Image.asset(item.image,)),
             Gap(10),
             Text(item.title, style: AppStyles.style16()),
             Text(
               item.subtitle,
               style: AppStyles.style16().copyWith(fontWeight: FontWeight.w400),
             ),
+            const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

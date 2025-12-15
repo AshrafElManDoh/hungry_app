@@ -13,6 +13,8 @@ final class AuthSuccess extends AuthState {
 
 final class AuthLoading extends AuthState {}
 
+final class AuthLogoutLoading extends AuthState {}
+
 final class AuthSelectGalleryImage extends AuthState {}
 
 final class AuthLoadProfileData extends AuthState {
@@ -35,4 +37,5 @@ final class AuthFailed extends AuthState {
 }
 
 final class AuthLogOut extends AuthState {}
+
 final class AuthAddedCard extends AuthState {}
