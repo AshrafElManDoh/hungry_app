@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -45,6 +44,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<AuthCubit>();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -94,16 +94,32 @@ class _LoginViewState extends State<LoginView> {
                           controller: passController,
                         ),
                         Gap(50),
-                        CustomBtn(
-                          title: "Login",
-                          onTap: () {
-                            if (formKey.currentState!.validate()) {
-                              context.read<AuthCubit>().login(
-                                email: emailController.text.trim(),
-                                password: passController.text,
-                              );
-                            }
-                          },
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CustomBtn(
+                                title: "Login",
+                                onTap: () async {
+                                  if (formKey.currentState!.validate()) {
+                                    await cubit.login(
+                                      email: emailController.text.trim(),
+                                      password: passController.text,
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
+                            Gap(10),
+                            Expanded(
+                              child: CustomBtn(
+                                title: "Guest",
+                                isFilled: false,
+                                onTap: () async {
+                                  cubit.loginAsGuest();
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                         Gap(20),
                         Row(

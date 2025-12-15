@@ -61,7 +61,7 @@ class _SplashViewState extends State<SplashView>
     await Future.delayed(const Duration(seconds: 2));
 
     final isLogged =
-        AppPrefHelpers.loadData(AppPrefHelpers.usernameKey) != null;
+        AppPrefHelpers.loadData(AppPrefHelpers.tokenKey) != null;
 
     if (!mounted) return;
 

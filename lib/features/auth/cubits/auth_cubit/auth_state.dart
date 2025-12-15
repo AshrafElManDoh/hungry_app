@@ -38,4 +38,6 @@ final class AuthFailed extends AuthState {
 
 final class AuthLogOut extends AuthState {}
 
+// final class AuthGuestMode extends AuthState {}
+
 final class AuthAddedCard extends AuthState {}

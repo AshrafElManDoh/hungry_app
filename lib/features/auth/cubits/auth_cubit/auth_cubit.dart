@@ -15,10 +15,18 @@ class AuthCubit extends Cubit<AuthState> {
   final AuthRepo _authRepo;
   String? selectedImage;
   bool isGalleryImage = false;
+  bool isGuestMode =
+      AppPrefHelpers.loadData(AppPrefHelpers.guestModeKey) as bool? ?? false;
   String? visa = '';
 
-  login({required String email, required String password}) async {
+  setGuestMode(bool value)async{
+    await AppPrefHelpers.saveData(AppPrefHelpers.guestModeKey, value);
+  }
+
+  Future<void> login({required String email, required String password}) async {
     emit(AuthLoading());
+    isGuestMode = false;
+    setGuestMode(isGuestMode);
     var resonse = await _authRepo.login(email: email, password: password);
     resonse.fold(
       (apiError) {
@@ -31,12 +39,27 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
+  Future<void> loginAsGuest() async {
+    emit(AuthLoading());
+    isGuestMode = true;
+    setGuestMode(isGuestMode);
+    await AppPrefHelpers.saveData(AppPrefHelpers.tokenKey, "guest token");
+    await AppPrefHelpers.saveData(AppPrefHelpers.guestModeKey, true);
+    emit(
+      AuthSuccess(
+        user: UserModel(name: "Guest", email: "Guest mode"),
+      ),
+    );
+  }
+
   signup({
     required String email,
     required String password,
     required String name,
   }) async {
     emit(AuthLoading());
+    isGuestMode = false;
+    setGuestMode(isGuestMode);
     var resonse = await _authRepo.singup(
       email: email,
       password: password,
@@ -61,6 +84,8 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthFailed(msg: apiError.message));
       },
       (userModel) {
+        selectedImage = userModel.imageUrl;
+        visa = userModel.visa;
         emit(
           AuthLoadProfileData(
             name: userModel.name,
@@ -99,6 +124,8 @@ class AuthCubit extends Cubit<AuthState> {
       },
       (userModel) {
         isGalleryImage = false;
+        selectedImage = userModel.imageUrl;
+        visa = userModel.visa;
         emit(
           AuthLoadProfileData(
             name: userModel.name,
@@ -129,7 +156,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthAddedCard());
   }
 
-  Future<void> clearUser() async {
+  Future<void> logOut() async {
     emit(AuthLogoutLoading());
     var resonse = await _authRepo.logout();
     resonse.fold(
@@ -137,10 +164,15 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthFailed(msg: apiError.message));
       },
       (message) async {
-        await AppPrefHelpers.clearData();
+        clearData();
         emit(AuthLogOut());
       },
     );
+  }
+
+  Future<void> clearData() async
+  {
+    await AppPrefHelpers.clearData();
   }
 
   void saveUser(UserModel userModel) async {

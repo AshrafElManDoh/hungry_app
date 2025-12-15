@@ -78,13 +78,19 @@ class _HomeViewState extends State<HomeView> {
       rate: 4.8,
     ),
   ];
+  late String name;
+  @override
+  void initState() {
+    name = AppPrefHelpers.loadData(AppPrefHelpers.usernameKey) as String? ?? "Our guest";
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // final size = MediaQuery.of(context).size;
     // final itemWidth = (size.width - 16 * 2 - 10) / 2;
     // final itemHeight = itemWidth * 1.5;
     // final aspectRatio = itemWidth / itemHeight;
-    final name = AppPrefHelpers.loadData(AppPrefHelpers.usernameKey) as String? ?? "";
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -97,7 +103,7 @@ class _HomeViewState extends State<HomeView> {
                 child: Column(
                   children: [
                     Gap(80),
-                    Header(name: name,),
+                    Header(name: name),
                     Gap(20),
                     SearchTextField(),
                     Gap(20),
@@ -131,7 +137,7 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
             ),
-            SliverToBoxAdapter(child: Gap(110),),
+            SliverToBoxAdapter(child: Gap(110)),
           ],
         ),
       ),
