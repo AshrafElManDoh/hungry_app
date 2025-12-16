@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 
 import '../../../../core/utils/app_styles.dart';
-import '../../data/item_model.dart';
+import '../../data/models/product_model.dart';
 
 class ItemWidget extends StatelessWidget {
   const ItemWidget({super.key, required this.item});
 
-  final ItemModel item;
+  final ProductModel item;
 
   @override
   Widget build(BuildContext context) {
@@ -19,18 +18,20 @@ class ItemWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AspectRatio(aspectRatio: 1,child: Image.asset(item.image,)),
-            Gap(10),
-            Text(item.title, style: AppStyles.style16()),
+            AspectRatio(aspectRatio: 1,child: Image.network(item.image,)),
+            // Gap(10),
+            Text(item.name, style: AppStyles.style16()),
             Text(
-              item.subtitle,
-              style: AppStyles.style16().copyWith(fontWeight: FontWeight.w400),
+              item.description,
+              style: AppStyles.style14().copyWith(color: Colors.grey),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
             const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("⭐ ${item.rate}"),
+                Text("⭐ ${item.rating}"),
                 GestureDetector(
                   onTap: () {},
                   child: Icon(Icons.favorite, color: AppColors.primaryColor),
