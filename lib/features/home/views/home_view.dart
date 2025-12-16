@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/utils/service_locator.dart';
 import 'package:hungry_app/core/widgets/custom_indicator.dart';
 import 'package:hungry_app/features/home/cubits/home_cubit/home_cubit.dart';
@@ -59,7 +60,7 @@ class HomeView extends StatelessWidget {
                       child: Center(child: Text(state.errMsg)),
                     );
                   } else {
-                    return SliverToBoxAdapter(child: CustomIndicator());
+                    return SliverToBoxAdapter(child: CustomIndicator(color: AppColors.primaryColor,));
                   }
                 },
               ),

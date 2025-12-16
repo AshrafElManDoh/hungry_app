@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 
@@ -18,7 +19,14 @@ class ItemWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AspectRatio(aspectRatio: 1,child: Image.network(item.image,)),
+            AspectRatio(
+              aspectRatio: 1,
+              child: CachedNetworkImage(
+                imageUrl: item.image,
+                errorWidget: (context, url, error) =>
+                    Icon(Icons.error, color: Colors.red),
+              ),
+            ),
             // Gap(10),
             Text(item.name, style: AppStyles.style16()),
             Text(
@@ -35,7 +43,7 @@ class ItemWidget extends StatelessWidget {
                 GestureDetector(
                   onTap: () {},
                   child: Icon(Icons.favorite, color: AppColors.primaryColor),
-                )
+                ),
               ],
             ),
           ],
