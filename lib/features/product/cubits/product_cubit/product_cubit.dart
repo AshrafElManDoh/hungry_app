@@ -10,6 +10,13 @@ class ProductCubit extends Cubit<ProductState> {
 
   final ProductRepo productRepo;
 
+  ProductSuccess? lastSuccessState;
+
+  final Set<int> selectedToppings = {};
+  final Set<int> selectedSideOptions = {};
+
+  double spicyLevel = 0;
+
   Future<void> loadProductOptions() async {
     emit(ProductLoading());
 
@@ -27,7 +34,7 @@ class ProductCubit extends Cubit<ProductState> {
           },
           (sideOptions) {
             emit(
-              ProductSuccess(
+              lastSuccessState = ProductSuccess(
                 toppings: toppings,
                 sideOptions: sideOptions,
               ),
@@ -36,5 +43,21 @@ class ProductCubit extends Cubit<ProductState> {
         );
       },
     );
+  }
+
+  void toggleTopping(int id) {
+    selectedToppings.contains(id)
+        ? selectedToppings.remove(id)
+        : selectedToppings.add(id);
+
+    emit(ProductSelectionChanged());
+  }
+
+  void toggleSideOption(int id) {
+    selectedSideOptions.contains(id)
+        ? selectedSideOptions.remove(id)
+        : selectedSideOptions.add(id);
+
+    emit(ProductSelectionChanged());
   }
 }

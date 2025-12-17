@@ -6,17 +6,21 @@ import 'package:hungry_app/features/product/views/widgets/topping_item.dart';
 import '../../../../core/utils/app_styles.dart';
 
 class ExtraWidget extends StatelessWidget {
-  const ExtraWidget({super.key, required this.title, required this.list});
+  const ExtraWidget({
+    super.key,
+    required this.title,
+    required this.list,
+    required this.selectedIds,
+    required this.onTap,
+  });
 
   final String title;
   final List<ToppingModel> list;
+  final Set<int> selectedIds;
+  final void Function(int id) onTap;
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> items = List.generate(
-      list.length,
-      (index) => ToppingItem(item: list[index]),
-    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -33,7 +37,20 @@ class ExtraWidget extends StatelessWidget {
         Gap(16),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: Row(spacing: 10, children: [Gap(8), ...items, Gap(8)]),
+          child: Row(
+            spacing: 10,
+            children: [
+              const Gap(10),
+              ...list.map(
+                (item) => ToppingItem(
+                  item: item,
+                  isSelected: selectedIds.contains(item.id),
+                  onTap: () => onTap(item.id),
+                ),
+              ),
+              const Gap(10),
+            ],
+          ),
         ),
       ],
     );

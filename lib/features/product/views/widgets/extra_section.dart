@@ -13,13 +13,27 @@ class ExtraSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProductCubit, ProductState>(
       builder: (context, state) {
-        if (state is ProductSuccess) {
+        final cubit = context.read<ProductCubit>();
+        if (state is ProductSuccess || state is ProductSelectionChanged) {
+          final successState = state is ProductSuccess
+              ? state
+              : context.read<ProductCubit>().lastSuccessState;
           return Column(
             children: [
               Gap(32),
-              ExtraWidget(title: "Toppings", list: state.toppings),
+              ExtraWidget(
+                title: "Toppings",
+                list: successState!.toppings,
+                selectedIds: cubit.selectedToppings,
+                onTap: cubit.toggleTopping,
+              ),
               Gap(32),
-              ExtraWidget(title: "Side Options", list: state.sideOptions),
+              ExtraWidget(
+                title: "Side Options",
+                list: successState.sideOptions,
+                selectedIds: cubit.selectedSideOptions,
+                onTap: cubit.toggleSideOption,
+              ),
             ],
           );
         } else if (state is ProductFailure) {
@@ -27,7 +41,7 @@ class ExtraSection extends StatelessWidget {
             child: Text("Something went wrong !", style: AppStyles.style20()),
           );
         } else {
-          return Center(child: CustomIndicator(color: Colors.black,));
+          return Center(child: CustomIndicator(color: Colors.black));
         }
       },
     );

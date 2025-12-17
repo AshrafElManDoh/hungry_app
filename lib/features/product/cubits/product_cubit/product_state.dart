@@ -7,6 +7,8 @@ final class ProductInitial extends ProductState {}
 
 final class ProductLoading extends ProductState {}
 
+final class ProductSelectionChanged extends ProductState {}
+
 final class ProductSuccess extends ProductState {
   final List<ToppingModel> toppings;
   final List<ToppingModel> sideOptions;

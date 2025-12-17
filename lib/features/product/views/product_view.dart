@@ -11,15 +11,10 @@ import 'package:hungry_app/features/product/data/repos/product_repo_imp.dart';
 import 'package:hungry_app/features/product/views/widgets/extra_section.dart';
 import 'package:hungry_app/features/product/views/widgets/spicy_widget.dart';
 
-class ProductView extends StatefulWidget {
+class ProductView extends StatelessWidget {
   const ProductView({super.key, required this.productModel});
-  final ProductModel productModel ;
+  final ProductModel productModel;
 
-  @override
-  State<ProductView> createState() => _ProductViewState();
-}
-
-class _ProductViewState extends State<ProductView> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -34,35 +29,29 @@ class _ProductViewState extends State<ProductView> {
               Gap(40),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    CachedNetworkImage(imageUrl: widget.productModel.image,height: MediaQuery.of(context).size.width * 0.5,),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Customize Your Burger\nto Your Tastes.\nUltimate Experience",
-                            style: AppStyles.style16().copyWith(
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                          Gap(30),
-                          SpicyWidget(),
-                        ],
-                      ),
+                    CachedNetworkImage(
+                      imageUrl: productModel.image,
+                      height: MediaQuery.of(context).size.width * 0.7,
                     ),
+                    Text(productModel.name, style: AppStyles.style20()),
+                    Gap(10),
+                    Text(productModel.description, style: AppStyles.style18()),
+                    Gap(10),
+                    SpicyWidget(),
                   ],
                 ),
               ),
               ExtraSection(),
+              Gap(30),
             ],
           ),
         ),
         bottomNavigationBar: PriceButtonWidget(
           titleButton: "Add to cart",
-          price: widget.productModel.price,
+          price: productModel.price,
           onTap: () {},
         ),
       ),

@@ -4,8 +4,15 @@ import 'package:gap/gap.dart';
 import 'package:hungry_app/features/product/data/models/topping_model.dart';
 
 class ToppingItem extends StatelessWidget {
-  const ToppingItem({super.key, required this.item});
+  const ToppingItem({
+    super.key,
+    required this.item,
+    required this.onTap,
+    required this.isSelected,
+  });
   final ToppingModel item;
+  final VoidCallback onTap;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +51,13 @@ class ToppingItem extends StatelessWidget {
                   backgroundColor: Colors.red,
                   child: Center(
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: onTap,
                       padding: EdgeInsets.zero,
-                      icon: Icon(Icons.add, size: 16, color: Colors.white),
+                      icon: Icon(
+                        isSelected ? Icons.check : Icons.add,
+                        size: 16,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
