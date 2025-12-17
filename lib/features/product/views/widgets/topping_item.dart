@@ -1,8 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:hungry_app/features/product/data/models/topping_model.dart';
 
 class ToppingItem extends StatelessWidget {
-  const ToppingItem({super.key});
+  const ToppingItem({super.key, required this.item});
+  final ToppingModel item;
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +29,16 @@ class ToppingItem extends StatelessWidget {
                 borderRadius: buildBorderRadius(),
                 color: Colors.white,
               ),
-              child: Image.asset("assets/test/tomato.png"),
+              child: CachedNetworkImage(imageUrl: item.image),
             ),
             Gap(8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text("Tomato",style: TextStyle(color: Colors.white,fontSize: 12),),
+                Text(
+                  item.name,
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
                 CircleAvatar(
                   radius: 8,
                   backgroundColor: Colors.red,
@@ -40,7 +46,7 @@ class ToppingItem extends StatelessWidget {
                     child: IconButton(
                       onPressed: () {},
                       padding: EdgeInsets.zero,
-                      icon: Icon(Icons.add,size: 16,color: Colors.white,),
+                      icon: Icon(Icons.add, size: 16, color: Colors.white),
                     ),
                   ),
                 ),
@@ -51,6 +57,6 @@ class ToppingItem extends StatelessWidget {
       ),
     );
   }
-  BorderRadius buildBorderRadius() => BorderRadius.circular(18);
 
+  BorderRadius buildBorderRadius() => BorderRadius.circular(18);
 }

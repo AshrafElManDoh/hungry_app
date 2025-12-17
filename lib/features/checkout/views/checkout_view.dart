@@ -39,6 +39,7 @@ class CheckoutView extends StatelessWidget {
               ? null
               : PriceButtonWidget(
                   titleButton: "Pay now",
+                  price: "later",
                   onTap: () {
                     showCustomDialaog(context);
                   },

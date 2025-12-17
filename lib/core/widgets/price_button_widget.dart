@@ -7,10 +7,13 @@ class PriceButtonWidget extends StatelessWidget {
   const PriceButtonWidget({
     super.key,
     required this.titleButton,
-    required this.onTap, this.isBottomNavBar =true,
+    required this.onTap,
+    this.isBottomNavBar = true,
+    required this.price,
   });
   final String titleButton;
-  final bool isBottomNavBar ;
+  final String price;
+  final bool isBottomNavBar;
   final void Function() onTap;
 
   @override
@@ -32,7 +35,7 @@ class PriceButtonWidget extends StatelessWidget {
                   style: AppStyles.style18().copyWith(color: Colors.black),
                 ),
                 Gap(5),
-                Text("\$ 18.9", style: AppStyles.style32()),
+                Text("\$ $price", style: AppStyles.style32()),
               ],
             ),
             Padding(

@@ -40,7 +40,7 @@ class HomeView extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ProductView(),
+                                  builder: (context) => ProductView(productModel: state.products[index],),
                                 ),
                               );
                             },

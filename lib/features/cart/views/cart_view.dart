@@ -44,6 +44,7 @@ class _CartViewState extends State<CartView> {
       bottomSheet: PriceButtonWidget(
         isBottomNavBar: false,
         titleButton: "Check out",
+        price: "later",
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => CheckoutView()),

@@ -8,13 +8,13 @@ import 'package:hungry_app/features/home/data/repos/home_repo.dart';
 import '../models/product_model.dart';
 
 class HomeRepoImp implements HomeRepo {
-  final ApiServices apiService;
+  final ApiServices apiServices;
 
-  HomeRepoImp({required this.apiService});
+  HomeRepoImp({required this.apiServices});
   @override
   Future<Either<ApiErrors, List<ProductModel>>> getProducts() async {
     try {
-      var response = await apiService.get(endPoints: "/products");
+      var response = await apiServices.get(endPoints: "/products");
       return right(
         (response["data"] as List)
             .map((e) => ProductModel.fromJson(e))
