@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hungry_app/core/widgets/custom_indicator.dart';
 
 import '../constants/app_colors.dart';
 import '../utils/app_styles.dart';
@@ -8,10 +9,12 @@ class GeneralBtn extends StatelessWidget {
     super.key,
     required this.onTap,
     required this.titleButton,
+    this.isLoading = false,
   });
 
   final void Function() onTap;
   final String titleButton;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +26,12 @@ class GeneralBtn extends StatelessWidget {
           color: AppColors.primaryColor,
           borderRadius: BorderRadius.circular(20),
         ),
-        child: Text(
-          titleButton,
-          style: AppStyles.style18().copyWith(color: Colors.white),
-        ),
+        child: isLoading
+            ? CustomIndicator()
+            : Text(
+                titleButton,
+                style: AppStyles.style18().copyWith(color: Colors.white),
+              ),
       ),
     );
   }

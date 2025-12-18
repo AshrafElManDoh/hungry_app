@@ -3,15 +3,10 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/app_styles.dart';
 
-class SpicyWidget extends StatefulWidget {
-  const SpicyWidget({super.key});
-
-  @override
-  State<SpicyWidget> createState() => _SpicyWidgetState();
-}
-
-class _SpicyWidgetState extends State<SpicyWidget> {
-  double sliderValue = 0;
+class SpicyWidget extends StatelessWidget {
+  const SpicyWidget({super.key, required this.value, required this.onChanged});
+  final double value;
+  final void Function(double) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +21,10 @@ class _SpicyWidgetState extends State<SpicyWidget> {
           child: Column(
             children: [
               Slider(
-                value: sliderValue,
+                value: value,
                 activeColor: AppColors.primaryColor,
-                onChanged: (value) {
-                  setState(() {
-                    sliderValue = value;
-                  });
-                },
+                onChanged: onChanged,
+                divisions: 2,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),

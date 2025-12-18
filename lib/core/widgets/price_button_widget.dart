@@ -10,9 +10,11 @@ class PriceButtonWidget extends StatelessWidget {
     required this.onTap,
     this.isBottomNavBar = true,
     required this.price,
+    this.isLoading = false,
   });
   final String titleButton;
   final String price;
+  final bool isLoading;
   final bool isBottomNavBar;
   final void Function() onTap;
 
@@ -40,7 +42,11 @@ class PriceButtonWidget extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 8),
-              child: GeneralBtn(onTap: onTap, titleButton: titleButton),
+              child: GeneralBtn(
+                onTap: onTap,
+                titleButton: titleButton,
+                isLoading: isLoading,
+              ),
             ),
           ],
         ),

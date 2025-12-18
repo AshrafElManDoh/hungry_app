@@ -17,6 +17,24 @@ class ProductCubit extends Cubit<ProductState> {
 
   double spicyLevel = 0;
 
+  int itemQty = 1;
+
+  void onChangeCounter(int newValue) {
+    if (newValue >= 1) {
+      itemQty = newValue;
+      emit(ProductSelectionChanged());
+    }
+  }
+
+  void onChangeSpicy(double newValue) {
+    spicyLevel = newValue;
+    emit(ProductSelectionChanged());
+  }
+
+  double calcTotal(String price) {
+    return double.parse(price) * itemQty;
+  }
+
   Future<void> loadProductOptions() async {
     emit(ProductLoading());
 

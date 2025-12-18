@@ -8,7 +8,7 @@ class ApiExceptions {
       case DioExceptionType.connectionTimeout :
       return ApiErrors(message: "Bad connection!",);
       case DioExceptionType.badResponse :
-      return ApiErrors(message: error.response!.data["message"]);
+      return ApiErrors(message: "Bad Response");
       default :
       return ApiErrors(message: "Something went wrong!");
     } 

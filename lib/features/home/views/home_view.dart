@@ -19,7 +19,9 @@ class HomeView extends StatelessWidget {
     // final itemHeight = itemWidth * 1.5;
     // final aspectRatio = itemWidth / itemHeight;
     return BlocProvider(
-      create: (context) => HomeCubit(getIt.get<HomeRepoImp>())..loadData()..getProducts(),
+      create: (context) => HomeCubit(getIt.get<HomeRepoImp>())
+        ..loadData()
+        ..getProducts(),
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
@@ -36,13 +38,20 @@ class HomeView extends StatelessWidget {
                         delegate: SliverChildBuilderDelegate(
                           childCount: state.products.length,
                           (context, index) => GestureDetector(
-                            onTap: () {
-                              Navigator.push(
+                            onTap: () async {
+                              final result = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ProductView(productModel: state.products[index],),
+                                  builder: (context) => ProductView(
+                                    productModel: state.products[index],
+                                  ),
                                 ),
                               );
+                              if (result != null) {
+                                ScaffoldMessenger.of(
+                                  context,
+                                ).showSnackBar(SnackBar(content: Text(result)));
+                              }
                             },
                             child: ItemWidget(item: state.products[index]),
                           ),
@@ -60,7 +69,9 @@ class HomeView extends StatelessWidget {
                       child: Center(child: Text(state.errMsg)),
                     );
                   } else {
-                    return SliverToBoxAdapter(child: CustomIndicator(color: AppColors.primaryColor,));
+                    return SliverToBoxAdapter(
+                      child: CustomIndicator(color: AppColors.primaryColor),
+                    );
                   }
                 },
               ),
