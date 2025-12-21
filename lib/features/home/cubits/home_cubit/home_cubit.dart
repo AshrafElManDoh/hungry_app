@@ -13,6 +13,7 @@ class HomeCubit extends Cubit<HomeState> {
   final HomeRepo homeRepo;
 
   late String name;
+  List<ProductModel> allproducts = [];
 
   void loadData() {
     name =
@@ -29,8 +30,18 @@ class HomeCubit extends Cubit<HomeState> {
         emit(HomeFailure(errMsg: errMsg.message));
       },
       (products) {
-        emit(HomeSuccess(products: products));
+        allproducts = products;
+        emit(HomeSuccess(products: allproducts));
       },
     );
   }
+   
+  void searchProducts(String query) {
+    final filteredProducts = allproducts
+        .where((product) =>
+            product.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+    emit(HomeSuccess(products: filteredProducts));
+  }
+
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
+import 'package:hungry_app/features/home/cubits/home_cubit/home_cubit.dart';
 
 class Categories extends StatefulWidget {
   const Categories({super.key});
@@ -10,7 +12,7 @@ class Categories extends StatefulWidget {
 }
 
 class _CategoriesState extends State<Categories> {
-  List<String> categories = ["All", "Combos", "Sliders", "Burger"];
+  List<String> categories = ["All", "Chicken", "Beef", "Shawarma","Family"];
   int? selectedCategory;
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,13 @@ class _CategoriesState extends State<Categories> {
               onTap: () {
                 setState(() {
                   selectedCategory = index;
+                  final category = categories[index];
+                  if(category == "All"){
+                    context.read<HomeCubit>().searchProducts("");
+                  } else {
+                    context.read<HomeCubit>().searchProducts(category);
+                  }
+                  
                 });
               },
               child: Container(
