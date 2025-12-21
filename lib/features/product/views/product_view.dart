@@ -63,7 +63,7 @@ class ProductView extends StatelessWidget {
           },
           builder: (context, state) {
             final productCubit = context.watch<ProductCubit>();
-            final isLoading = state is CartLoading;
+            final isLoading = state is CartAddLoading;
 
             return PriceButtonWidget(
               titleButton: "Add to cart",

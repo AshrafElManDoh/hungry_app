@@ -21,9 +21,10 @@ class ApiServices {
 
   Future<dynamic> delete({
     required String endPoints,
-    required Map<String, dynamic> data,
+    required int itemId ,
+    Map<String, dynamic>? data,
   }) async {
-    var response = await _dio.delete(endPoints, data: data);
+    var response = await _dio.delete("$endPoints/$itemId", data: data);
     return response.data;
   }
 

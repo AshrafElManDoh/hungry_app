@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:hungry_app/core/network/api_errors.dart';
 import 'package:hungry_app/core/network/api_exceptions.dart';
 import 'package:hungry_app/core/network/api_services.dart';
+import 'package:hungry_app/features/cart/data/models/cart_data_model.dart';
 import 'package:hungry_app/features/cart/data/models/cart_request_model.dart';
 import 'package:hungry_app/features/cart/data/repos/cart_repo.dart';
 
@@ -22,6 +23,37 @@ class CartRepoImp implements CartRepo {
       var response = await apiServices.post(
         endPoints: "/cart/add",
         data: requestModel.toJson(),
+      );
+      return right(response["message"]);
+    } on Exception catch (e) {
+      if (e is DioException) {
+        return left(ApiExceptions.handleError(e));
+      } else {
+        return left(ApiErrors(message: e.toString()));
+      }
+    }
+  }
+
+  @override
+  Future<Either<ApiErrors, CartDataModel>> getCartData() async {
+    try {
+      var response = await apiServices.get(endPoints: "/cart");
+      return right(CartDataModel.fromJson(response["data"]));
+    } on Exception catch (e) {
+      if (e is DioException) {
+        return left(ApiExceptions.handleError(e));
+      } else {
+        return left(ApiErrors(message: e.toString()));
+      }
+    }
+  }
+
+  @override
+  Future<Either<ApiErrors, String>> removeFromCart(int itemId) async {  
+    try {
+      var response = await apiServices.delete(
+        endPoints: "/cart/remove",
+        itemId: itemId,
       );
       return right(response["message"]);
     } on Exception catch (e) {

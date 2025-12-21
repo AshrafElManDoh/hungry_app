@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/features/auth/views/profile_view.dart';
+import 'package:hungry_app/features/cart/cubits/cart_cubit/cart_cubit.dart';
 import 'package:hungry_app/features/cart/views/cart_view.dart';
 import 'package:hungry_app/features/home/views/home_view.dart';
 import 'package:hungry_app/features/orderHistory/views/order_history_view.dart';
@@ -19,8 +21,9 @@ class _RootState extends State<Root> {
 
   @override
   void initState() {
-    controller = PageController(initialPage: currentPage);
     super.initState();
+    controller = PageController(initialPage: currentPage);
+    context.read<CartCubit>().getCartItems();
   }
 
   List<Widget> views = [
