@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
+import 'package:hungry_app/core/utils/app_pref_helpers.dart';
 import 'package:hungry_app/features/auth/views/profile_view.dart';
 import 'package:hungry_app/features/cart/cubits/cart_cubit/cart_cubit.dart';
 import 'package:hungry_app/features/cart/views/cart_view.dart';
@@ -18,12 +19,16 @@ class Root extends StatefulWidget {
 class _RootState extends State<Root> {
   late PageController controller;
   int currentPage = 0;
+  late bool isGuest;
 
   @override
   void initState() {
     super.initState();
     controller = PageController(initialPage: currentPage);
-    context.read<CartCubit>().getCartItems();
+    isGuest = AppPrefHelpers.loadData(AppPrefHelpers.tokenKey) != null ? false: true;
+    if (!isGuest) {
+      context.read<CartCubit>().getCartItems();
+    }
   }
 
   List<Widget> views = [

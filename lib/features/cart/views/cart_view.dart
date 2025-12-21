@@ -1,92 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
-import 'package:hungry_app/core/widgets/custom_indicator.dart';
+import 'package:hungry_app/core/widgets/please_login_body.dart';
 import 'package:hungry_app/core/widgets/price_button_widget.dart';
+import 'package:hungry_app/features/auth/cubits/auth_cubit/auth_cubit.dart';
+import 'package:hungry_app/features/auth/views/login_view.dart';
 import 'package:hungry_app/features/cart/cubits/cart_cubit/cart_cubit.dart';
-import 'package:hungry_app/features/cart/views/widgets/cart_item.dart';
+import 'package:hungry_app/features/cart/views/widgets/cart_body.dart';
 import 'package:hungry_app/features/checkout/views/checkout_view.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+
+
 
 class CartView extends StatelessWidget {
   const CartView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocConsumer<CartCubit, CartState>(
-        listener: (context, state) {
-          if (state is CartFailure) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.errMsg)));
-          }
-        },
-        builder: (context, state) {
-          final cartCubit = context.read<CartCubit>();
-          final isLoading =
-              state is CartLoading ||
-              state is CartremoveLoading ||
-              state is CartAddItem;
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (context, authState) {
+        final authCubit = context.read<AuthCubit>();
+        final isGuest = authCubit.isGuestMode;
 
-          return ModalProgressHUD(
-            inAsyncCall: isLoading,
-            progressIndicator: const CustomIndicator(),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: CustomScrollView(
-                slivers: [
-                  const SliverToBoxAdapter(child: Gap(40)),
-
-                  /// 🛒 Cart Items
-                  if (state is CartGetItems || state is CartremoveLoading)
-                    SliverList.builder(
-                      itemCount: cartCubit.cartDataModel?.items.length ?? 0,
-                      itemBuilder: (context, index) {
-                        final cartItem = cartCubit.cartDataModel!.items[index];
-                        return CartItem(
-                          cartModel: cartItem,
-                          count: cartItem.quantity,
-                          onChanged: (newValue) {},
-                        );
-                      },
-                    )
-                  else if (state is CartFailure)
-                    SliverFillRemaining(
-                      child: Center(child: Text(state.errMsg)),
-                    )
-                  else
-                    SliverFillRemaining(
-                      child: Center(
-                        child: CustomIndicator(color: AppColors.primaryColor),
+        return Scaffold(
+          backgroundColor: isGuest ? AppColors.primaryColor : null,
+          body: isGuest
+              ? PleaseLoginBody(
+                  onLoginTap: () async {
+                    await authCubit.clearData();
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const LoginView(),
                       ),
-                    ),
+                      (route) => false,
+                    );
+                  },
+                )
+              : CartBody(),
 
-                  const SliverToBoxAdapter(child: Gap(200)),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
+          /// 👈 أهم حتة: bottomSheet مش هيظهر لو Guest
+          bottomSheet: isGuest ? null : const _CartBottomSheet(),
+        );
+      },
+    );
+  }
+}
 
-      /// 💰 Checkout Button
-      bottomSheet: BlocBuilder<CartCubit, CartState>(
-        builder: (context, state) {
-          final totalPrice =
-              context.read<CartCubit>().cartDataModel?.totalPrice ?? "0.0";
 
-          return PriceButtonWidget(
-            isBottomNavBar: false,
-            titleButton: "Check out",
-            price: totalPrice,
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const CheckoutView()),
-            ),
-          );
-        },
+
+
+class _CartBottomSheet extends StatelessWidget {
+  const _CartBottomSheet();
+
+  @override
+  Widget build(BuildContext context) {
+    final totalPrice =
+        context.watch<CartCubit>().cartDataModel?.totalPrice ?? "0.0";
+
+    return PriceButtonWidget(
+      isBottomNavBar: false,
+      titleButton: "Check out",
+      price: totalPrice,
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => CheckoutView(totalPrice: totalPrice),
+        ),
       ),
     );
   }

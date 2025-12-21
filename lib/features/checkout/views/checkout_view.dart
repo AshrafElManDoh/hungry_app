@@ -9,7 +9,8 @@ import 'package:hungry_app/core/widgets/please_login_body.dart';
 import 'package:hungry_app/features/checkout/views/widgets/user_checkout_body.dart';
 
 class CheckoutView extends StatelessWidget {
-  const CheckoutView({super.key});
+  const CheckoutView({super.key, required this.totalPrice});
+  final String totalPrice;
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +35,12 @@ class CheckoutView extends StatelessWidget {
                     );
                   },
                 )
-              : UserCheckoutBody(),
+              : UserCheckoutBody(price: double.parse(totalPrice)),
           bottomNavigationBar: isGuest
               ? null
               : PriceButtonWidget(
                   titleButton: "Pay now",
-                  price: "later",
+                  price: (double.parse(totalPrice) + 5 + 5).toStringAsFixed(2),
                   onTap: () {
                     showCustomDialaog(context);
                   },

@@ -4,7 +4,8 @@ import 'package:hungry_app/features/checkout/views/widgets/order_summary_section
 import 'package:hungry_app/features/checkout/views/widgets/payment_method_section.dart';
 
 class UserCheckoutBody extends StatelessWidget {
-  const UserCheckoutBody({super.key});
+  const UserCheckoutBody({super.key, required this.price});
+  final double price ;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class UserCheckoutBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          OrderHistorySection(order: 30, taxes: 5, fees: 5),
+          OrderHistorySection(order: price, taxes: 5, fees: 5),
           Gap(20),
           PaymentMethodSection(),
         ],
