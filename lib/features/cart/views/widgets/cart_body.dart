@@ -49,7 +49,21 @@ class CartBody extends StatelessWidget {
                     },
                   )
                 else if (state is CartFailure)
-                  SliverFillRemaining(child: Center(child: Text(state.errMsg)))
+                  SliverFillRemaining(
+                    hasScrollBody: true,
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        await context.read<CartCubit>().getCartItems();
+                      },
+                      child: SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          child: Center(child: Text(state.errMsg)),
+                        ),
+                      ),
+                    ),
+                  )
                 else
                   SliverFillRemaining(
                     child: Center(

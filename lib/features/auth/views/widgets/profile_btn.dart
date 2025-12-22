@@ -30,11 +30,16 @@ class ProfileBtn extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              text,
-              style: AppStyles.style18().copyWith(
-                color: isFilled ? AppColors.primaryColor : Colors.white
+            Flexible(
+              child: Text(
+                text,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: AppStyles.style18().copyWith(
+                  color: isFilled ? AppColors.primaryColor : Colors.white
+                ),
               ),
             ),
             iconPath != null ? Gap(5) : SizedBox.shrink(),

@@ -28,7 +28,15 @@ class ItemWidget extends StatelessWidget {
               ),
             ),
             // Gap(10),
-            Text(item.name, style: AppStyles.style16()),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                item.name,
+                style: AppStyles.style16(),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
             Text(
               item.description,
               style: AppStyles.style14().copyWith(color: Colors.grey),

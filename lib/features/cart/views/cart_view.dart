@@ -9,8 +9,6 @@ import 'package:hungry_app/features/cart/cubits/cart_cubit/cart_cubit.dart';
 import 'package:hungry_app/features/cart/views/widgets/cart_body.dart';
 import 'package:hungry_app/features/checkout/views/checkout_view.dart';
 
-
-
 class CartView extends StatelessWidget {
   const CartView({super.key});
 
@@ -29,9 +27,7 @@ class CartView extends StatelessWidget {
                     await authCubit.clearData();
                     Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(
-                        builder: (_) => const LoginView(),
-                      ),
+                      MaterialPageRoute(builder: (_) => const LoginView()),
                       (route) => false,
                     );
                   },
@@ -46,25 +42,21 @@ class CartView extends StatelessWidget {
   }
 }
 
-
-
-
 class _CartBottomSheet extends StatelessWidget {
   const _CartBottomSheet();
 
   @override
   Widget build(BuildContext context) {
-    final totalPrice =
-        context.watch<CartCubit>().cartDataModel?.totalPrice ?? "0.0";
+    final totalPrice = context.watch<CartCubit>().totalPrice;
 
     return PriceButtonWidget(
       isBottomNavBar: false,
       titleButton: "Check out",
-      price: totalPrice,
+      price: totalPrice.toString(),
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => CheckoutView(totalPrice: totalPrice),
+          builder: (_) => CheckoutView(totalPrice: totalPrice.toString()),
         ),
       ),
     );
