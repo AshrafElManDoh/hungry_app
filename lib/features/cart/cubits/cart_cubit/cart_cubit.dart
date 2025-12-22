@@ -17,6 +17,22 @@ class CartCubit extends Cubit<CartState> {
   CartDataModel? cartDataModel;
   double totalPrice = 0;
 
+  List<CartModel> convertCartDataModelToCartRequestModel() {
+    final items = cartDataModel!.items
+        .map(
+          (e) => CartModel(
+            productId: e.productId,
+            quantity: e.quantity,
+            spicy: double.parse(e.spicy),
+            toppings: e.toppings.map((topping) => topping.id).toList(),
+            sideOptions: e.sideOptions.map((option) => option.id).toList(),
+          ),
+        )
+        .toList();
+    log(items.toString());
+    return items;
+  }
+
   Future<void> addToCart(CartModel cartmodel) async {
     emit(CartAddLoading());
     var response = await cartRepo.addToCart(CartRequestModel([cartmodel]));

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:hungry_app/features/orderHistory/data/models/order_history_model.dart';
 
 import '../../../../core/utils/app_styles.dart';
 import '../../../cart/views/widgets/cart_btn.dart';
 
 class OrderHistoryItem extends StatelessWidget {
-  const OrderHistoryItem({super.key});
+  const OrderHistoryItem({super.key, required this.item});
+  final OrderHistoryModel item ;
 
   @override
   Widget build(BuildContext context) {
@@ -21,28 +23,22 @@ class OrderHistoryItem extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.asset("assets/splash/splash.png", height: 100),
+                    Image.network(item.image, height: 100),
                   ],
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Hamburger", style: AppStyles.style16()),
+                    Text(item.status, style: AppStyles.style16()),
                     Text(
-                      "Veggie Burger",
+                      item.createdAt,
                       style: AppStyles.style16().copyWith(
                         fontWeight: FontWeight.w400,
                       ),
                     ),
                     Text(
-                      "Quantity : 3",
-                      style: AppStyles.style16().copyWith(
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Text(
-                      "Price : 30\$",
+                      item.totalPrice,
                       style: AppStyles.style16().copyWith(
                         fontWeight: FontWeight.w400,
                       ),

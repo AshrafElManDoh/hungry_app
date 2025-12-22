@@ -3,6 +3,7 @@ import 'package:hungry_app/core/network/api_services.dart';
 import 'package:hungry_app/features/auth/data/repos/auth_repo_imp.dart';
 import 'package:hungry_app/features/cart/data/repos/cart_repo_imp.dart';
 import 'package:hungry_app/features/home/data/repos/home_repo_imp.dart';
+import 'package:hungry_app/features/orderHistory/data/repos/order_repo_imp.dart';
 import 'package:hungry_app/features/product/data/repos/product_repo_imp.dart';
 
 final getIt = GetIt.instance;
@@ -19,5 +20,8 @@ void setupServiceLocator() {
   );
   getIt.registerSingleton<CartRepoImp>(
     CartRepoImp(apiServices: getIt.get<ApiServices>()),
+  );
+  getIt.registerSingleton<OrderRepoImp>(
+    OrderRepoImp(apiServices: getIt.get<ApiServices>()),
   );
 }
